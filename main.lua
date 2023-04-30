@@ -3,16 +3,21 @@ local whitelisted = {
     1829166929, 2707380590, -- FurryBoy
     3726073197, 4531589092 -- Ghoster
 }
-local tableFindGamePlace = { 23578803 }
+local TeleportService = game:GetService("TeleportService")
+--local placeName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local placeID = 23578803
+local tableFindGamePlace = {placeID}
 local LocalPlayer = game:GetService("Players").LocalPlayer
-function kick(title, message)
+function kick(title, message, leavetext)
     game:GetService("Players").LocalPlayer:Kick()
     game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
     game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = title
+    game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ButtonArea.LeaveButton.ButtonText.Text = leavetext
+
 end
 if syn then
     if table.find(whitelisted, LocalPlayer.UserId) then
-        print("User is whitelisted. Hi "..LocalPlayer.DisplayName)
+        print("WHITELIST:\nUser is whitelisted.\nHi "..LocalPlayer.Name.."!")
         if table.find(tableFindGamePlace, game.PlaceId) then
             wait(0.1)
             local m = Instance.new("Message", game:GetService("Workspace"))
@@ -261,11 +266,15 @@ if syn then
                 writefile("CashSaves.txt", cashValue)
             end
         else
-            kick("Error", "You are in a different game.\nFor the script to work, join Hotel Elephant.")
+            kick("Error", "You are not in Hotel Elephant!\nYou will be teleported to the game shortly.", "Leave if you are experiencing teleport issues")
+            TeleportService:Teleport(placeID, LocalPlayer)
+            game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ButtonArea.LeaveButton.Visible = false
+            task.wait(5)
+            game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ButtonArea.LeaveButton.Visible = true
         end
     else
-        kick("Whitelist Error", "You are not whitelisted in this project!")
+        kick("Whitelist Error", "You are not whitelisted in this project!", "Leave")
     end
 else
-    kick("Unsupported Executer", "Your executer is not supported.\nSupported Executer:\nSynapse X")
+    kick("Unsupported Executer", "Your executer is not supported.\nSupported Executer:\nSynapse X", "Leave")
 end
