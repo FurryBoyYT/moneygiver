@@ -1,7 +1,8 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 local whitelisted = {
     1829166929, 2707380590, -- FurryBoy
-    3726073197, 4531589092 -- Ghoster
+    3726073197, 4531589092, -- Ghoster
+    484371552 -- mstudio45
 }
 local TeleportService = game:GetService("TeleportService")
 --local placeName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
@@ -13,7 +14,6 @@ function kick(title, message, leavetext)
     game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
     game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = title
     game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ButtonArea.LeaveButton.ButtonText.Text = leavetext
-
 end
 if syn then
     if table.find(whitelisted, LocalPlayer.UserId) then
@@ -22,7 +22,6 @@ if syn then
             wait(0.1)
             local m = Instance.new("Message", game:GetService("Workspace"))
             m.Text = "Loading..."
-            wait(0.2)
             m.Text = "Loading Infinite Yield..."
             loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
             m.Text = "Loading Translator..."
@@ -266,11 +265,16 @@ if syn then
                 writefile("CashSaves.txt", cashValue)
             end
         else
-            kick("Error", "You are not in Hotel Elephant!\nYou will be teleported to the game shortly.", "Leave if you are experiencing teleport issues")
+            kick("Error", "You are not in Hotel Elephant!\nYou will be teleported to the game shortly.\nTeleporting in 10 seconds.", "Leave")
+            local txtmsg = game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage
+            local timer = 10
+            while timer > 0 do
+                task.wait(1)
+                timer = timer - 1
+                txtmsg.Text = "You are not in Hotel Elephant!\nYou will be teleported to the game shortly.\nTeleporting in "..timer.." seconds."
+            end
+            txtmsg.Text = "You are not in Hotel Elephant!\nYou will be teleported to the game shortly.\nTeleporting..."
             TeleportService:Teleport(placeID, LocalPlayer)
-            game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ButtonArea.LeaveButton.Visible = false
-            task.wait(5)
-            game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ButtonArea.LeaveButton.Visible = true
         end
     else
         kick("Whitelist Error", "You are not whitelisted in this project!", "Leave")
