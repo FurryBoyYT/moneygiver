@@ -1,7 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 local whitelisted = {
-    1829166929, 2707380590, -- FurryBoy
-    3726073197, 4531589092 -- Ghoster
+    1829166929, 2707380590 -- FurryBoy
 }
 local tableFindGamePlace = { 23578803 }
 local LocalPlayer = game:GetService("Players").LocalPlayer
